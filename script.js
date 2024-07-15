@@ -3,21 +3,23 @@ editor.setTheme("ace/theme/monokai");
 editor.session.setMode("ace/mode/python");
 
 function runCode() {
-    let code = `
+    let userCode = editor.getValue();
+    let predefinedCode = `
 aepfel = 10
 orangen = 15
 karotten = 7
 bananen = 12
 tomaten = 5
 trauben = 8
-` + editor.getValue();
+`;
+    let fullCode = predefinedCode + "\n" + userCode;
     
     fetch('/run', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ code: code })
+        body: JSON.stringify({ code: fullCode })
     })
     .then(response => response.json())
     .then(data => {
